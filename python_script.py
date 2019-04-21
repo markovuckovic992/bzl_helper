@@ -1,8 +1,8 @@
-from util import list_files, do_the_copy
+from utils.copy_util import copytree
 
 def main():
 	print("-----+-----")
-	do_the_copy("test-setup.sh", "/home/marko")
+	do_the_copy("bazel-out/host/bin/", "bazel-bin/bazel-out/host/bin/")
 	print("-----+-----")
 
 

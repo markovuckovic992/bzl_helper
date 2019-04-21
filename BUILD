@@ -1,22 +1,33 @@
-load("//:macro.bzl", "py_run_test", "sctf_py_tes")
+load("//:macro.bzl", "custom_rule_tes", "custom_coverage")
 
 cc_binary(
 	name="main",
 	srcs=["main.cpp"],
-    tags=["no-cache"],
-    stamp=1,
+	copts=["--coverage"],
+	linkopts=["--coverage"],
 )
 
 py_test(
 	name="test_",
 	srcs=["simple_test.py"],
+	imports=["utils.fixtures.fixtures"],
 	main="simple_test.py",
-	data=[":main"],
-    stamp=1,
+	data=[":main", "//utils/fixtures:fixtures.py", "//utils:copy_util.py"],
 )
 
-sh_test(
-	name="coverage_runner",
-	srcs=["coverage_runner.sh"],
-    tags=["no-cache"],
+custom_rule_tes(
+	name = "test_runner",
+	target = ":test_",
+	testonly = True,
+)
+
+sh_binary(
+	name="shell_test_script",
+	srcs=["shell_test_script.sh"]
+)
+
+custom_coverage(
+	name = "coverage_binary",
+	srcs = ["test_runner"],
+	testonly = True,
 )
