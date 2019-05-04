@@ -1,0 +1,6 @@
+docker run -it --entrypoint=/bin/bash -e USER="$(id -u)"   -u="$(id -u)" -v /etc/passwd:/etc/passwd  -v ~/macro_test:/workspace   -v ~/.cache/bazel/tmp:/.cache/bazel/tmp   -v /usr/bin/:/usr/bin/ -v /usr/lib/:/usr/lib/ -v /usr/include/:/usr/include -w /workspace l.gcr.io/google/bazel:0.23.1
+
+docker run   -e USER="$(id -u)"   -u="$(id -u)" -v /etc/passwd:/etc/passwd  -v ~/macro_test:/workspace   -v ~/.cache/bazel/tmp:/.cache/bazel/tmp   -v /usr/bin/:/usr/bin/ -v /usr/lib/:/usr/lib/ -v /usr/include/:/usr/include -w /workspace   l.gcr.io/google/bazel:0.23.1   --output_user_root=/.cache/bazel/tmp  run //:shell_test_script
+
+
+bazel --bazelrc=.bazelrc build --config=docker-sandbox //:main

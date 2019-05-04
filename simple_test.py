@@ -8,9 +8,9 @@ def test_add_001(widget):
 	assert widget.get("width") == 24
 
 def test_add_002():
-	pass
-	# data = subprocess.Popen('/home/marko/macro_test/bazel-bin/main', stdout=subprocess.PIPE).communicate()[0]
-	# print(data)
+	ws = os.environ['WS']
+	data = subprocess.Popen('{}/bazel-bin/main'.format(ws), stdout=subprocess.PIPE).communicate()[0]
+	print(data)
 
 if __name__ == '__main__':
 	ret = pytest.main(['-s', __file__])
@@ -23,7 +23,7 @@ if __name__ == '__main__':
 	# 	for f in files:
 	# 		print('{}{}'.format(subindent, f))
 	# print("-----")
-	os.system("cp /home/marko/main.pic.gcno /home/marko/macro_test/bazel-bin/")
-	os.system("cp /home/marko/main.pic.gcda /home/marko/macro_test/bazel-bin/")
+	# os.system("cp /home/marko/main.pic.gcno /home/marko/macro_test/bazel-bin/")
+	# os.system("cp /home/marko/main.pic.gcda /home/marko/macro_test/bazel-bin/")
 	#copytree("/home/marko/macro_test/bazel-out/host/bin/", "/home/marko/macro_test/bazel-bin/bazel-out/host/bin/")
 	sys.exit(ret)

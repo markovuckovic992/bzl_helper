@@ -1,0 +1,9 @@
+Plan:
+	1. Pokreni testove u dokeru
+	2. Pokreni sh skriptu u dokeru
+	3. Probaj sa posebnim playbookom
+		- da ide sa komandom
+		- da ide sa skriptom
+	4. Treba da se proba natively a ne preko dokera
+		- Vidi da li sa ls u sc moze da se dodje do .gcno
+		(https://docs.bazel.build/versions/master/remote-execution-sandbox.html)
