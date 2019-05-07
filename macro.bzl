@@ -1,21 +1,33 @@
-def py_test_runner(ctx):
-    test_gcno = ctx.actions.declare_file(
-        "main.pic.gcno"
-    )
+load("@bazel_skylib//lib:paths.bzl", "paths")
 
-    test_gcda = ctx.actions.declare_file(
-        "main.pic.gcda"
-    )
+def py_test_runner(ctx):
+    outputs = []
+    #for file in ctx.attr.target[DefaultInfo].data_runfiles.files:
+    #    if not file.is_source and \
+    #        ctx.executable.target.basename != file.owner.name:
+    #            outputs.append(ctx.actions.declare_file(
+    #                "{}.pic.gcno".format(file.owner.name)
+    #            ))
+    #            outputs.append(ctx.actions.declare_file(
+    #                "{}.pic.gcda".format(file.owner.name)
+    #            ))
+    for binary in ctx.attr.binaries:
+        outputs.append(ctx.actions.declare_file(
+            "{}.pic.gcno".format(binary)
+        ))
+        outputs.append(ctx.actions.declare_file(
+            "{}.pic.gcda".format(binary)
+        ))
 
     ctx.actions.run(
-        outputs=[test_gcno, test_gcda],
+        outputs=outputs,
         inputs=ctx.files.target,
         executable=ctx.executable.target,
         use_default_shell_env=True,
     )
 
     return DefaultInfo(
-        files=depset([test_gcno, test_gcda])
+        files=depset(outputs)
     )
 
 
@@ -23,12 +35,16 @@ custom_rule_tes = rule(
     implementation = py_test_runner,
     attrs = {
         "target": attr.label(executable=True, cfg="target", mandatory=True),
+        "binaries":  attr.string_list(mandatory=True, allow_empty=False),
     },
 )
 
 
 def custom_coverage_impl(ctx):
-    path = " /home/marko/.cache/bazel/_bazel_marko/13c07021545910c3523bc1f465f409a4/execroot/__main__/bazel-out/k8-fastbuild/bin/"
+    for file in ctx.attr.srcs[0].files:
+        location = file.root.path
+
+    path = " /home/marko/.cache/bazel/_bazel_marko/13c07021545910c3523bc1f465f409a4/execroot/__main__/{}".format(location)
     cmd = "geninfo {} -o out.info && ".format(path)
     cmd += "genhtml out.info -o html"
 

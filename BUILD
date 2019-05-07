@@ -3,6 +3,8 @@ load("//:macro.bzl", "custom_rule_tes", "custom_coverage")
 cc_binary(
 	name="main",
 	srcs=["main.cpp"],
+	linkopts=["--coverage"],
+	copts=["--coverage"]
 )
 
 py_test(
@@ -16,6 +18,7 @@ py_test(
 custom_rule_tes(
 	name = "test_runner",
 	target = ":test_",
+	binaries = ["main"],
 	testonly = True,
 )
 
